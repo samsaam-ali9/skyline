@@ -80,21 +80,14 @@ weather-app/
 
 No build step, no package installation, and no dependencies are required.
 
-## 📸 Screenshots
-
-_Add screenshots of the search state, a successful result, the loading spinner, and an error card here before submission._
-
-| Search | Result | Loading | Error |
-|---|---|---|---|
-| _add image_ | _add image_ | _add image_ | _add image_ |
 
 ## 🔗 Live Demo
 
-`[Add your GitHub Pages / Netlify / Vercel URL here]`
+`https://samsaam-ali9.github.io/skyline/`
 
 ## 📦 Repository
 
-`[Add your public GitHub repository link here]`
+`https://github.com/samsaam-ali9/skyline`
 
 ## 👤 Author
 
