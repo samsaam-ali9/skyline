@@ -45,7 +45,7 @@ GET https://api.openweathermap.org/data/2.5/weather?q={city}&units=metric&appid=
 The API key is stored in a single constant at the top of `script.js`:
 
 ```js
-const OPENWEATHER_API_KEY = '10a9833a80a03d17c77ab58589a2a462';
+const OPENWEATHER_API_KEY = '495b9131505a51c58607df3667610c3a';
 ```
 
 The application currently uses a valid OpenWeatherMap API key. If needed, you can replace it with your own free API key by editing the OPENWEATHER_API_KEY constant in script.js.

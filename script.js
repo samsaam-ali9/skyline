@@ -7,7 +7,7 @@
    ========================================================================== */
 
 /* ---------- CONFIG ---------- */
-const OPENWEATHER_API_KEY = '10a9833a80a03d17c77ab58589a2a462';
+const OPENWEATHER_API_KEY = '495b9131505a51c58607df3667610c3a';
 const BASE_URL = 'https://api.openweathermap.org/data/2.5/weather';
 const LAST_CITY_STORAGE_KEY = 'skyline:lastCity';
 
