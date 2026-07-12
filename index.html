@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Skyline — Weather, Now</title>
+  <meta name="description" content="Skyline is a live weather dashboard. Search any city and see the sky, right now." />
+
+  <!-- Fonts: Space Grotesk for display, Inter for body/data -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="theme-clear" data-theme="clear">
+
+  <!-- Ambient background layer, changes with weather -->
+  <div class="sky" aria-hidden="true">
+    <div class="sky__gradient"></div>
+    <div class="sky__particles" id="particles"></div>
+  </div>
+
+  <div class="page">
+
+
+
+    <!-- ============ HEADER ============ -->
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand__mark" aria-hidden="true">☁</span>
+        <span class="brand__name">Skyline</span>
+      </div>
+
+      <div class="clock" id="clock">
+        <time id="clockTime" class="clock__time">--:--:--</time>
+        <span id="clockDate" class="clock__date">Loading date…</span>
+      </div>
+    </header>
+
+    <main id="main">
+
+
+      <!-- ============ SEARCH ============ -->
+      <section class="search" aria-label="Search weather by city">
+        <form id="searchForm" class="search__form" role="search" novalidate>
+          <label for="cityInput" class="visually-hidden">City name</label>
+          <input
+            type="text"
+            id="cityInput"
+            name="city"
+            class="search__input"
+            placeholder="Search a city — try Lahore, Tokyo, Oslo…"
+            autocomplete="off"
+            aria-describedby="searchHint"
+          />
+          <button type="submit" id="searchBtn" class="search__button">
+            <span class="search__button-label">Search</span>
+            <svg class="search__button-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+              <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </form>
+        <p id="searchHint" class="search__hint">Press Enter to search. Your last city is remembered.</p>
+      </section>
+
+
+      <!-- ============ LOADING STATE ============ -->
+      <section id="loadingState" class="state-card loading-card" hidden aria-live="polite">
+        <div class="spinner" aria-hidden="true">
+          <span class="spinner__ring"></span>
+          <span class="spinner__sun"></span>
+        </div>
+        <p class="loading-card__text">Fetching the sky over your city…</p>
+      </section>
+
+      <!-- ============ ERROR STATE ============ -->
+      <section id="errorState" class="state-card error-card" hidden aria-live="assertive">
+        <div class="error-card__icon" aria-hidden="true">⚠</div>
+        <h2 id="errorTitle" class="error-card__title">Something went wrong</h2>
+        <p id="errorMessage" class="error-card__message">We couldn't reach the weather service.</p>
+        <button type="button" id="errorRetryBtn" class="error-card__retry">Try again</button>
+      </section>
+
+      <!-- ============ WEATHER CARD ============ -->
+      <section id="weatherCard" class="weather-card" hidden aria-live="polite">
+
+        <!-- Primary summary -->
+        <div class="weather-card__primary">
+          <div class="location">
+            <h1 id="cityName" class="location__city">City</h1>
+            <p id="countryName" class="location__country">Country</p>
+          </div>
+
+          <div class="hero">
+            <img id="weatherIcon" class="hero__icon" src="" alt="" width="120" height="120" />
+            <div class="hero__temp-group">
+              <span id="temperature" class="hero__temp">--°</span>
+              <p id="description" class="hero__description">—</p>
+              <p id="feelsLike" class="hero__feels-like">Feels like --°</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sunrise / sunset strip -->
+        <div class="sun-strip">
+          <div class="sun-strip__item">
+            <span class="sun-strip__icon" aria-hidden="true">🌅</span>
+            <div>
+              <p class="sun-strip__label">Sunrise</p>
+              <p id="sunrise" class="sun-strip__value">--:--</p>
+            </div>
+          </div>
+          <div class="sun-strip__track" aria-hidden="true">
+            <div class="sun-strip__sun" id="sunPosition"></div>
+          </div>
+          <div class="sun-strip__item sun-strip__item--right">
+            <div>
+              <p class="sun-strip__label">Sunset</p>
+              <p id="sunset" class="sun-strip__value">--:--</p>
+            </div>
+            <span class="sun-strip__icon" aria-hidden="true">🌇</span>
+          </div>
+        </div>
+
+        <!-- Detail grid -->
+        <div class="details-grid" role="list">
+
+          <article class="detail-card" role="listitem">
+            <span class="detail-card__icon" aria-hidden="true">💧</span>
+            <p class="detail-card__label">Humidity</p>
+            <p id="humidity" class="detail-card__value">--%</p>
+          </article>
+
+          <article class="detail-card" role="listitem">
+            <span class="detail-card__icon" aria-hidden="true">💨</span>
+            <p class="detail-card__label">Wind Speed</p>
+            <p id="windSpeed" class="detail-card__value">-- m/s</p>
+          </article>
+
+          <article class="detail-card" role="listitem">
+            <span class="detail-card__icon" aria-hidden="true">🌡</span>
+            <p class="detail-card__label">Pressure</p>
+            <p id="pressure" class="detail-card__value">-- hPa</p>
+          </article>
+
+          <article class="detail-card" role="listitem">
+            <span class="detail-card__icon" aria-hidden="true">👁</span>
+            <p class="detail-card__label">Visibility</p>
+            <p id="visibility" class="detail-card__value">-- km</p>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- ============ EMPTY / WELCOME STATE ============ -->
+      <section id="emptyState" class="state-card empty-card">
+        <div class="empty-card__icon" aria-hidden="true">🔎</div>
+        <h2 class="empty-card__title">Search for a city to begin</h2>
+        <p class="empty-card__message">Skyline will show you the temperature, conditions, and sky, right now.</p>
+      </section>
+
+    </main>
+
+    <footer class="footer">
+      <p>Built by SAMSAAM AlI for the DevRise Internship Program · Task 2 · Powered by OpenWeatherMap</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
